@@ -1,0 +1,7 @@
+# JetBrains related folders
+.idea
+Simulation/.idea
+
+# Outputs #
+Simulation/output/*
+Visualization/output/*
