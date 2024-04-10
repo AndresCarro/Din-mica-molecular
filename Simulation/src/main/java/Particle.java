@@ -3,7 +3,6 @@ import java.util.Objects;
 
 public class Particle {
     private final int id;
-    private static int nextId = 0;
     private double x;
     private double y;
     private double speed;
@@ -11,11 +10,25 @@ public class Particle {
     private double radius;
     private double mass;
     private Crash[] crashesList;
+    private double L;
 
-    public Particle(double L, double speed, double radius, double mass,int N){
-        this.id = nextId++;
+    public Particle(double L, double mass, double radius){
+        this.id = 0;
+        this.x = L/2;
+        this.y = L/2;
+        this.L = L;
+        this.speed = 0;
+        this.angle = 0;
+        this.radius = radius;
+        this.mass = mass;
+        this.crashesList = null;
+    }
+
+    public Particle(double L, double speed, double radius, double mass,int N, int id){
+        this.id = id;
         this.x = Math.random() * L;
         this.y = Math.random() * L;
+        this.L = L;
         this.speed = speed;
         this.angle = Math.random() * 2 * Math.PI;
         this.radius = radius;
@@ -30,15 +43,15 @@ public class Particle {
 
     public boolean isOverlap(Particle particle){
         double dist = Math.pow(Math.pow((particle.x-this.x), 2) + Math.pow((particle.y-this.y),2), 0.5);
-        return dist > (this.radius + particle.radius);
+        return dist < (this.radius + particle.radius);
     }
 
     public void updateCrash(Particle particle, Crash crash){
         this.crashesList[Solid.values().length + particle.id] = crash;
     }
 
-    public Crash getCrash(Particle particleA){
-        return this.crashesList[Solid.values().length + particleA.id];
+    public Crash getCrash(Particle particle){
+        return this.crashesList[Solid.values().length + particle.id];
     }
 
     public void updateCrash(Solid solid, Crash crash){
@@ -65,10 +78,6 @@ public class Particle {
         return id;
     }
 
-    public static int getNextId() {
-        return nextId;
-    }
-
     public double getX() {
         return x;
     }
@@ -91,5 +100,52 @@ public class Particle {
 
     public Crash[] getCrashesList() {
         return crashesList;
+    }
+
+    public double timeToSolid(Solid solid){
+        switch (solid) {
+            // Choque entre particulas
+            case NONE -> System.out.println("No debería estar aca");
+            // Choque con borde derecho
+            case RIGHT -> {
+                double Vx = this.speed * Math.cos(this.angle);
+                if(Vx < 0){
+                    return Double.POSITIVE_INFINITY;
+                }
+                return (this.L - this.radius - this.x) / Vx;
+            }
+            // Choque con borde izquierdo
+            case LEFT -> {
+                double Vx = this.speed * Math.cos(this.angle);
+                if(Vx > 0){
+                    return Double.POSITIVE_INFINITY;
+                }
+                return (-1) * (this.x - this.radius) / Vx;
+            }
+            // Choque con borde superior
+            case UP -> {
+                double Vy = this.speed * Math.sin(this.angle);
+                if(Vy < 0){
+                    return Double.POSITIVE_INFINITY;
+                }
+                return (this.L - this.radius - this.y) / Vy;
+            }
+            // Choque con borde inferior
+            case DOWN -> {
+                double Vy = this.speed * Math.sin(this.angle);
+                if(Vy > 0){
+                    return Double.POSITIVE_INFINITY;
+                }
+                return (-1) * (this.y - this.radius) / Vy;
+            }
+            // Choque con centro
+            case CENTER -> System.out.println("No debería estar aca");
+        }
+        return 0;
+    }
+
+
+    public double getL() {
+        return L;
     }
 }

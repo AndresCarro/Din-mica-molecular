@@ -2,10 +2,10 @@ import java.util.*;
 
 public class CrashList {
 
-    private Set<Crash> crashList;
+    private List<Crash> crashList;
 
     public CrashList() {
-        this.crashList = new TreeSet<>(Comparator.comparingDouble(Crash::getTime));
+        this.crashList = new LinkedList<>();
     }
 
     public Crash nextCrash() {
@@ -14,34 +14,57 @@ public class CrashList {
         return nextCrash;
     }
 
-    public void updateCrash(Particle particleA, Particle particleB) {
-        // Eliminar el anterior
-        Crash prevCrash = particleA.getCrash(particleB);
-        this.crashList.remove(prevCrash);
-
-        // Poner el nuevo
-        Crash newCrash = new Crash(particleA, particleB);
+    public void createCrash(Particle particleA, Particle particleB) {
+        Crash newCrash = new Crash(particleA, particleB, 0);
         addCrash(newCrash);
         particleA.updateCrash(particleB, newCrash);
         particleB.updateCrash(particleA, newCrash);
     }
 
-    public void updateCrash(Particle particleA, Solid solid){
-        // Eliminar el anterior
-        Crash prevCrash = particleA.getCrash(solid);
-        this.crashList.remove(prevCrash);
-
-        // Poner el nuevo
-        Crash newCrash = new Crash(particleA, solid);
+    public void createCrash(Particle particleA, Solid solid){
+        Crash newCrash = new Crash(particleA, solid, 0);
         addCrash(newCrash);
         particleA.updateCrash(solid, newCrash);
     }
 
-    public void addCrash(Crash crash){
-        if(crash.getParticleA().isOverlap(crash.getParticleB())){
-            return;
+
+    public void updateCrash(Particle particleA, Particle particleB, double actualTime) {
+        // Eliminar el anterior
+        Crash prevCrash = particleA.getCrash(particleB);
+        removeCrash(prevCrash);
+
+        // Poner el nuevo
+        Crash newCrash = new Crash(particleA, particleB, actualTime);
+        addCrash(newCrash);
+        particleA.updateCrash(particleB, newCrash);
+        particleB.updateCrash(particleA, newCrash);
+    }
+
+    public void updateCrash(Particle particleA, Solid solid, double actualTime){
+        // Eliminar el anterior
+        Crash prevCrash = particleA.getCrash(solid);
+        removeCrash(prevCrash);
+
+        // Poner el nuevo
+        Crash newCrash = new Crash(particleA, solid, actualTime);
+        addCrash(newCrash);
+        particleA.updateCrash(solid, newCrash);
+    }
+
+    public void addCrash(Crash crash) {
+        int index = 0;
+        for (Crash c : crashList) {
+            if (crash.getTime() < c.getTime()) {
+                crashList.add(index, crash);
+                return;
+            }
+            index++;
         }
-        this.crashList.add(crash);
+        crashList.add(crash);
+    }
+
+    public void removeCrash(Crash crash) {
+        crashList.remove(crash);
     }
 
 }
