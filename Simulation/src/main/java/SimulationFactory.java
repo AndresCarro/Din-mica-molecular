@@ -21,7 +21,7 @@ public class SimulationFactory {
     public void simulate(double maxTime){
         try{
             FileWriter writer_data = new FileWriter(this.outputFile);
-            writer_data.write("id,x,y,vel,angulo,time,crash");
+            writer_data.write("id,x,y,vel,angulo,time,crash,ParticleA,ParticleB");
 
             for(Particle particle : ParticlesList.getParticles()){
                 writer_data.write( "\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + 0 + "," + "INIT");
@@ -40,7 +40,9 @@ public class SimulationFactory {
                 changeCrashes(crash, actualTime);
 
                 for(Particle particle : ParticlesList.getParticles()){
-                    writer_data.write( "\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + actualTime + "," + crash.getSolid().name());
+                    writer_data.write( "\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() +
+                            "," + particle.getSpeed() + "," + particle.getAngle() + "," + actualTime + "," +
+                            crash.getSolid().name() + "," + crash.getParticleA().getId() + "," + crash.getParticleB().getId());
                 }
 
                 prevTime = actualTime;

@@ -33,25 +33,4 @@ public class SimulationConfig {
     public int getTotalTime() {
         return totalTime;
     }
-
-    public void setL(double l) {
-        L = l;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    public void setN(int n) {
-        N = n;
-    }
-
-    public void setRadius(double radius) {
-        this.radius = radius;
-    }
-
-
-    public void setTotalTime(int totalTime) {
-        this.totalTime = totalTime;
-    }
 }
