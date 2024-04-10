@@ -11,8 +11,9 @@ public class Particle {
     private double mass;
     private Crash[] crashesList;
     private double L;
+    private int N;
 
-    public Particle(double L, double mass, double radius){
+    public Particle(double L, double mass, double radius, int N){
         this.id = 0;
         this.x = L/2;
         this.y = L/2;
@@ -21,7 +22,7 @@ public class Particle {
         this.angle = 0;
         this.radius = radius;
         this.mass = mass;
-        this.crashesList = null;
+        this.crashesList = new Crash[Solid.values().length + N];
     }
 
     public Particle(double L, double speed, double radius, double mass,int N, int id){
@@ -33,6 +34,7 @@ public class Particle {
         this.angle = Math.random() * 2 * Math.PI;
         this.radius = radius;
         this.mass = mass;
+        this.N = N;
         this.crashesList = new Crash[Solid.values().length + N];
     }
 
@@ -147,5 +149,9 @@ public class Particle {
 
     public double getL() {
         return L;
+    }
+
+    public int getN() {
+        return N;
     }
 }

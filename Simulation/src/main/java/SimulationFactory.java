@@ -78,7 +78,11 @@ public class SimulationFactory {
     // Cambio los choques asociados a las particulas que chocaron
     public void changeCrashes(Crash crash, double actualTime){
         for(int i=0; i<ParticlesList.getParticles().size(); i++){
-            CrashList.updateCrash(crash.getParticleA(), ParticlesList.getParticles().get(i), actualTime);
+            if(ParticlesList.getParticles().get(i).isOverlap(crash.getParticleB())){
+                CrashList.updateCrash(crash.getParticleA(), crash.getParticleB(), Double.POSITIVE_INFINITY);
+            }else{
+                CrashList.updateCrash(crash.getParticleA(), ParticlesList.getParticles().get(i), actualTime);
+            }
         }
         for(Solid solid : Solid.values()){
             CrashList.updateCrash(crash.getParticleA(), solid, actualTime);
@@ -86,10 +90,11 @@ public class SimulationFactory {
 
         if(crash.getSolid() == Solid.NONE){
             for(int i=0; i<ParticlesList.getParticles().size(); i++){
-                if(ParticlesList.getParticles().get(i).isOverlap(crash.getParticleB())){
-                    CrashList.updateCrash(crash.getParticleB(), ParticlesList.getParticles().get(i), Double.POSITIVE_INFINITY);
+                if(ParticlesList.getParticles().get(i).isOverlap(crash.getParticleA())){
+                    CrashList.updateCrash(crash.getParticleB(), crash.getParticleA(), Double.POSITIVE_INFINITY);
+                }else{
+                    CrashList.updateCrash(crash.getParticleB() ,ParticlesList.getParticles().get(i), actualTime);
                 }
-                CrashList.updateCrash(crash.getParticleB() ,ParticlesList.getParticles().get(i), actualTime);
             }
             for(Solid solid : Solid.values()){
                 CrashList.updateCrash(crash.getParticleB(), solid, actualTime);

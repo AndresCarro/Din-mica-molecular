@@ -15,7 +15,7 @@ public class Crash {
 
     public Crash(Particle particleA, Solid solid, double actualTime) {
         this.particleA = particleA;
-        this.particleB = new Particle(particleA.getL(), CENTER_MASS, CENTER_RADIUS );
+        this.particleB = new Particle(particleA.getL(), CENTER_MASS, CENTER_RADIUS, particleA.getN());
         this.solid = solid;
         if(solid == Solid.NONE){
             this.time = Double.POSITIVE_INFINITY;
