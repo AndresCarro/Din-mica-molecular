@@ -7,7 +7,7 @@ import java.util.List;
 public class SimulationFactory {
     private final ParticlesList ParticlesList;
     private final CrashList CrashList;
-    private String outputFile;
+    private final String outputFile;
 
     public SimulationFactory(double L, int N, double radius, double speed, double mass) {
         ParticlesList = new ParticlesList();
@@ -40,7 +40,7 @@ public class SimulationFactory {
                 changeCrashes(crash, actualTime);
 
                 for(Particle particle : ParticlesList.getParticles()){
-                    writer_data.write( "\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + actualTime + "," + "pepe");
+                    writer_data.write( "\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + actualTime + "," + crash.getSolid().name());
                 }
 
                 prevTime = actualTime;

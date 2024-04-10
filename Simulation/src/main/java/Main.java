@@ -7,7 +7,6 @@ public class Main {
         double speed = 1;
         double maxTime = 20;
 
-
         SimulationFactory simulator = new SimulationFactory(L, N, radius, speed,mass);
         simulator.simulate(maxTime);
     }
