@@ -5,3 +5,12 @@ Simulation/.idea
 # Outputs #
 Simulation/output/*
 Visualization/output/*
+
+# Java output #
+target
+
+# Python env #
+Visualization/src/venv
+Visualization/src/Visualization.iml
+
+TP3.iml
