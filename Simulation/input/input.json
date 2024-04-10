@@ -1,1 +1,8 @@
-{}
+{
+  "L": 10,
+  "N": 20,
+  "speed": 1,
+  "radius": 0.1,
+  "totalTime": 20,
+  "mass" : 1
+}

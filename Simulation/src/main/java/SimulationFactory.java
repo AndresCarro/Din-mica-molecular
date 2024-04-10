@@ -12,7 +12,7 @@ public class SimulationFactory {
     public SimulationFactory(double L, int N, double radius, double speed, double mass) {
         ParticlesList = new ParticlesList();
         CrashList = new CrashList();
-        this.outputFile = "SimulationData_" + N + "_" + (int) L + ".csv";
+        this.outputFile = "Simulation/output/SimulationData_" + N + "_" + (int) L + ".csv";
 
         createParticles(N, L, radius, speed, mass);
         setTimes();
@@ -84,6 +84,9 @@ public class SimulationFactory {
 
         if(crash.getSolid() == Solid.NONE){
             for(int i=0; i<ParticlesList.getParticles().size(); i++){
+                if(ParticlesList.getParticles().get(i).isOverlap(crash.getParticleB())){
+                    CrashList.updateCrash(crash.getParticleB(), ParticlesList.getParticles().get(i), Double.POSITIVE_INFINITY);
+                }
                 CrashList.updateCrash(crash.getParticleB() ,ParticlesList.getParticles().get(i), actualTime);
             }
             for(Solid solid : Solid.values()){

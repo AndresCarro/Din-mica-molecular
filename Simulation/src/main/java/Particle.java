@@ -26,8 +26,8 @@ public class Particle {
 
     public Particle(double L, double speed, double radius, double mass,int N, int id){
         this.id = id;
-        this.x = Math.random() * L;
-        this.y = Math.random() * L;
+        this.x = Math.random() * (L-2*radius) + radius;
+        this.y = Math.random() * (L-2*radius) + radius;
         this.L = L;
         this.speed = speed;
         this.angle = Math.random() * 2 * Math.PI;

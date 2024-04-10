@@ -1,7 +1,6 @@
 public class Crash {
     private final double CENTER_RADIUS = 0.5;
     private final double CENTER_MASS = 3;
-
     private final double time;
     private final Particle particleA;
     private final Particle particleB;
@@ -18,7 +17,11 @@ public class Crash {
         this.particleA = particleA;
         this.particleB = new Particle(particleA.getL(), CENTER_MASS, CENTER_RADIUS );
         this.solid = solid;
-        this.time = actualTime + calculateTime();
+        if(solid == Solid.NONE){
+            this.time = Double.POSITIVE_INFINITY;
+        }else{
+            this.time = actualTime + calculateTime();
+        }
     }
 
     public void makeCrash(){
