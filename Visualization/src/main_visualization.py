@@ -26,11 +26,12 @@ SCALE_FACTOR = 150
 WALL_COLOR = (255, 255, 255)
 WALL_THICKNESS = 200
 PARTICLE_COLOR = (255, 0, 0)
+CIRCLE_COLOR = (133, 133, 133)
 
 
-def complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, N):
+def complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, circle_radius):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    video_writer = cv2.VideoWriter(OPENCV_OUTPUT_FILENAME + '.' + MP4_FORMAT, fourcc, 15.0, (L*SCALE_FACTOR,
+    video_writer = cv2.VideoWriter(OPENCV_OUTPUT_FILENAME + '.' + MP4_FORMAT, fourcc, 10.0, (L*SCALE_FACTOR,
                                                                                              L*SCALE_FACTOR))
     for timeFrame in timeFrames:
         current_particle_coords = particles_coords[particles_coords['time'] == timeFrame]
@@ -41,6 +42,10 @@ def complete_visualization_opencv(particles_coords, timeFrames, particle_radius,
         cv2.line(frame, (0, 0), (0, L * SCALE_FACTOR), WALL_COLOR, WALL_THICKNESS)
         cv2.line(frame, (L * SCALE_FACTOR, 0), (L-1, L * SCALE_FACTOR), WALL_COLOR, WALL_THICKNESS)
         cv2.line(frame, (0, L * SCALE_FACTOR), (L * SCALE_FACTOR, L * SCALE_FACTOR), WALL_COLOR, WALL_THICKNESS)
+
+        # Draw middle circle
+        cv2.circle(frame, tuple([int((L/2)*SCALE_FACTOR), int((L/2)*SCALE_FACTOR)]), int(circle_radius*SCALE_FACTOR),
+                   CIRCLE_COLOR, -1)
 
 
         for index, fila in current_particle_coords.iterrows():
@@ -54,8 +59,8 @@ def complete_visualization_opencv(particles_coords, timeFrames, particle_radius,
                             PARTICLE_COLOR, 5, cv2.LINE_AA)
             cv2.circle(frame, tuple(current_pos), int(particle_radius * SCALE_FACTOR), PARTICLE_COLOR, -1)
 
-
         video_writer.write(frame)
+
     video_writer.release()
     cv2.destroyAllWindows()
 
@@ -70,13 +75,11 @@ if __name__ == '__main__':
     # config = read_config_file(OUTPUT_PATH + 'StateData_' + str(N) + '_' + str(L) + '.json')
     config = read_config_file(DEFAULT_INPUT_PATH + 'input.json')
     particles_coords = pd.read_csv(PARTICLES_COORDINATES_FILE2)
-    circles = []
-    circles_coords = []
 
     timeFrames = particles_coords['time'].unique()
     particle_radius = config['radius']
 
     # OpenCV #
     print('Drawing particles with opencv...')
-    complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, N)
+    complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, config['circleRadius'])
     print('DONE!')
