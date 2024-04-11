@@ -3,6 +3,7 @@
   "N": 3,
   "speed": 1,
   "radius": 0.1,
-  "totalTime": 20,
-  "mass" : 1
+  "totalTime": 5,
+  "mass" : 1,
+  "circleRadius": 0.5
 }
