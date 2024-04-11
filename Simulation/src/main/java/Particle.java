@@ -2,8 +2,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Particle {
-    private final double CENTER_RADIUS = 0.005;
-    private final double CENTER_MASS = 3;
     private final int id;
     private double x;
     private double y;
@@ -22,20 +20,20 @@ public class Particle {
         this.L = L;
         this.speed = 0;
         this.angle = 0;
-        this.radius = CENTER_RADIUS;
-        this.mass = CENTER_MASS;
+        this.radius = Utils.CENTER_RADIUS;
+        this.mass = Utils.CENTER_MASS;
         this.crashesList = new Crash[Solid.values().length + N];
     }
 
-    public Particle(double L, double speed, double radius, double mass,int N, int id){
+    public Particle(double L, double speed, int N, int id){
         this.id = id;
+        this.mass = Utils.PARTICLE_MASS;
+        this.radius = Utils.PARTICLE_RADIUS;
         this.x = Math.random() * (L-2*radius) + radius;
         this.y = Math.random() * (L-2*radius) + radius;
         this.L = L;
         this.speed = speed;
         this.angle = Math.random() * 2 * Math.PI;
-        this.radius = radius;
-        this.mass = mass;
         this.N = N;
         this.crashesList = new Crash[Solid.values().length + N];
     }

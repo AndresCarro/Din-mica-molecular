@@ -1,3 +1,5 @@
+import org.json.JSONObject;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -6,19 +8,25 @@ public class SimulationFactory {
     private final CrashList CrashList;
     private final String outputFile;
     private final boolean movable;
+    private final double maxTime;
+    private final double frameSize;
 
-    public SimulationFactory(double L, int N, double radius, double speed, double mass, boolean movable) {
+    public SimulationFactory(double L, int N, double speed, boolean movable, double maxTime, double frameSize) {
         ParticlesList = new ParticlesList();
         CrashList = new CrashList();
 
+        this.maxTime=maxTime;
+        this.frameSize=frameSize;
         this.movable = movable;
         this.outputFile = "Simulation/output/SimulationData_" + N + "_" + (int) L + ".csv";
+        String outputStatus = "Simulation/output/StateData_" + N + "_" + (int) L + ".json";
+        writeStatus(outputStatus, L,  N, speed, movable, maxTime, frameSize);
 
-        createParticles(N, L, radius, speed, mass);
+        createParticles(N, L, speed);
         setTimes();
     }
 
-    public void simulate(double maxTime, double frameSize){
+    public void simulate(){
         try{
             FileWriter writer_data = new FileWriter(this.outputFile);
             writer_data.write("id,x,y,vel,angulo,time,crash,ParticleA,ParticleB");
@@ -32,9 +40,9 @@ public class SimulationFactory {
             double actualTime = crash.getTime();
             int counter = 0;
 
-            while( actualTime < maxTime){
+            while( actualTime < this.maxTime){
                 counter++;
-                if(counter == frameSize){
+                if(counter == this.frameSize){
                     counter = 0;
                     for(Particle particle : ParticlesList.getParticles()){
                         particle.move(actualTime - prevTime);
@@ -61,7 +69,7 @@ public class SimulationFactory {
         }
     }
 
-    private void createParticles(int N, double L, double radius, double speed, double mass) {
+    private void createParticles(int N, double L, double speed) {
         int NewN = N;
         if(this.movable){
             NewN += 1;
@@ -69,9 +77,9 @@ public class SimulationFactory {
         Particle centerParticle = new Particle(L, N);
         this.ParticlesList.insertNewParticle(centerParticle);
         for (int i = 0; i < N; i++) {
-            Particle auxParticle = new Particle(L, speed, radius, mass, NewN, i);
+            Particle auxParticle = new Particle(L, speed, NewN, i);
             while (!this.ParticlesList.insertNewParticle(auxParticle)) {
-                auxParticle = new Particle(L, speed, radius, mass, NewN, i);
+                auxParticle = new Particle(L, speed, NewN, i);
             }
         }
         if(!this.movable){
@@ -121,4 +129,28 @@ public class SimulationFactory {
             }
         }
     }
+
+    public void writeStatus(String file, double L, int N, double speed, boolean movable, double maxTime, double frameSize){
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("L", L);
+            jsonObject.put("N", N);
+            jsonObject.put("speed",speed);
+            jsonObject.put("totalTime", maxTime);
+            jsonObject.put("frameSize", frameSize);
+            jsonObject.put("movable", movable);
+            jsonObject.put("radius_particle", Utils.PARTICLE_RADIUS);
+            jsonObject.put("radius_solid", Utils.CENTER_RADIUS);
+            jsonObject.put("mass_particle", Utils.PARTICLE_MASS);
+            jsonObject.put("mass_solid", Utils.CENTER_MASS);
+
+            FileWriter writer_status = new FileWriter(file);
+            writer_status.write(jsonObject.toString());
+            writer_status.close();
+
+        } catch(IOException e){
+            System.out.println("Error al escribir en el archivo: " + e.getMessage());
+        }
+    }
+
 }
