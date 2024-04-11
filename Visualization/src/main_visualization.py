@@ -14,7 +14,7 @@ DEFAULT_INPUT_PATH = '../../Simulation/input/'
 AVG_PATH = '../output/'
 L = 10
 RADIUS_PARTICLES = 0.001
-N = 20
+N = 3
 RADIUS_CIRCLE = 0.005
 # ---------------------------------------------------
 
