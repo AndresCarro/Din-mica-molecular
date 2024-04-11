@@ -10,7 +10,7 @@ public class Main {
             return;
         }
 
-        SimulationFactory simulator = new SimulationFactory(config.getL(), config.getN(), config.getRadius(), config.getSpeed(), config.getMass(), config.isMovable());
+        SimulationFactory simulator = new SimulationFactory(config.getL(), config.getN(), config.getRadius(), config.getSpeed(), config.getMass(), config.getMovable());
         simulator.simulate(config.getTotalTime());
     }
 

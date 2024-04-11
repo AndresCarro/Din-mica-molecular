@@ -35,7 +35,7 @@ public class SimulationConfig {
         return totalTime;
     }
 
-    public boolean isMovable() {
+    public boolean getMovable() {
         return movable;
     }
 }

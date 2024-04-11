@@ -2,6 +2,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Particle {
+    private final double CENTER_RADIUS = 0.5;
+    private final double CENTER_MASS = 3;
     private final int id;
     private double x;
     private double y;
@@ -13,15 +15,15 @@ public class Particle {
     private final double L;
     private int N;
 
-    public Particle(double L, double mass, double radius, int N){
-        this.id = 0;
+    public Particle(double L, int N){
+        this.id = N-1;
         this.x = L/2;
         this.y = L/2;
         this.L = L;
         this.speed = 0;
         this.angle = 0;
-        this.radius = radius;
-        this.mass = mass;
+        this.radius = CENTER_RADIUS;
+        this.mass = CENTER_MASS;
         this.crashesList = new Crash[Solid.values().length + N];
     }
 
@@ -59,25 +61,25 @@ public class Particle {
         switch (solid) {
             case NONE, CENTER -> System.out.println("No debería estar aca!!!");
             case RIGHT -> {
-                if(Vx < 0){
+                if(Vx <= 0){
                     return Double.POSITIVE_INFINITY;
                 }
                 return (this.L - this.radius - this.x) / Vx;
             }
             case LEFT -> {
-                if(Vx > 0){
+                if(Vx >= 0){
                     return Double.POSITIVE_INFINITY;
                 }
                 return (-1) * (this.x - this.radius) / Vx;
             }
             case UP -> {
-                if(Vy < 0){
+                if(Vy <= 0){
                     return Double.POSITIVE_INFINITY;
                 }
                 return (this.L - this.radius - this.y) / Vy;
             }
             case DOWN -> {
-                if(Vy > 0){
+                if(Vy >= 0){
                     return Double.POSITIVE_INFINITY;
                 }
                 return (-1) * (this.y - this.radius) / Vy;

@@ -52,11 +52,20 @@ public class SimulationFactory {
     }
 
     private void createParticles(int N, double L, double radius, double speed, double mass) {
+        int NewN = N;
+        if(this.movable){
+            NewN += 1;
+        }
+        Particle centerParticle = new Particle(L, N);
+        this.ParticlesList.insertNewParticle(centerParticle);
         for (int i = 0; i < N; i++) {
-            Particle auxParticle = new Particle(L, speed, radius, mass,N, i);
+            Particle auxParticle = new Particle(L, speed, radius, mass, NewN, i);
             while (!this.ParticlesList.insertNewParticle(auxParticle)) {
-                auxParticle = new Particle(L, speed, radius, mass,N, i);
+                auxParticle = new Particle(L, speed, radius, mass, NewN, i);
             }
+        }
+        if(!this.movable){
+            this.ParticlesList.removeParticle(centerParticle);
         }
     }
 
@@ -66,7 +75,9 @@ public class SimulationFactory {
                 CrashList.createCrash(ParticlesList.getParticles().get(i), ParticlesList.getParticles().get(j));
             }
             for (Solid solid : Solid.values()) {
-                CrashList.createCrash(ParticlesList.getParticles().get(i), solid);
+                if(!this.movable || ! (solid == Solid.CENTER)){
+                    CrashList.createCrash(ParticlesList.getParticles().get(i), solid);
+                }
             }
         }
     }
@@ -80,7 +91,9 @@ public class SimulationFactory {
             }
         }
         for(Solid solid : Solid.values()){
-            CrashList.updateCrash(crash.getParticleA(), solid, actualTime);
+            if(!this.movable || ! (solid == Solid.CENTER)) {
+                CrashList.updateCrash(crash.getParticleA(), solid, actualTime);
+            }
         }
 
         if(crash.getSolid() == Solid.NONE){
@@ -92,7 +105,9 @@ public class SimulationFactory {
                 }
             }
             for(Solid solid : Solid.values()){
-                CrashList.updateCrash(crash.getParticleB(), solid, actualTime);
+                if(!this.movable || ! (solid == Solid.CENTER)) {
+                    CrashList.updateCrash(crash.getParticleB(), solid, actualTime);
+                }
             }
         }
     }
