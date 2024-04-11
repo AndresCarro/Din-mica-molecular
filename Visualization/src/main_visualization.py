@@ -55,8 +55,7 @@ def complete_visualization_opencv(particles_coords, timeFrames, particle_radius,
             finish_pos = [int(SCALE_FACTOR * fila['x']) + int(dx), int(SCALE_FACTOR * fila['y']) + int(dy)]
             current_pos = [int(fila['x'] * SCALE_FACTOR), int(fila['y'] * SCALE_FACTOR)]
 
-            cv2.arrowedLine(frame, tuple(start_pos), tuple(finish_pos),
-                            PARTICLE_COLOR, 5, cv2.LINE_AA)
+            #cv2.arrowedLine(frame, tuple(start_pos), tuple(finish_pos), PARTICLE_COLOR, 5, cv2.LINE_AA)
             cv2.circle(frame, tuple(current_pos), int(particle_radius * SCALE_FACTOR), PARTICLE_COLOR, -1)
 
         video_writer.write(frame)
