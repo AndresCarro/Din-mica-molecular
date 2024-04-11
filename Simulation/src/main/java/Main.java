@@ -11,7 +11,7 @@ public class Main {
         }
 
         SimulationFactory simulator = new SimulationFactory(config.getL(), config.getN(), config.getRadius(), config.getSpeed(), config.getMass(), config.getMovable());
-        simulator.simulate(config.getTotalTime());
+        simulator.simulate(config.getTotalTime(), config.getFrameSize());
     }
 
     public static SimulationConfig readConfig(String path){

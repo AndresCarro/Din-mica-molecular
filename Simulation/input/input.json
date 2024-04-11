@@ -4,6 +4,7 @@
   "speed": 1,
   "radius": 0.1,
   "totalTime": 5,
+  "frameSize": 4,
   "mass" : 1,
   "circleRadius": 0.5,
   "movable": true

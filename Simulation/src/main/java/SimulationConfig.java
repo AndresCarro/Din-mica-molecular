@@ -4,6 +4,7 @@ public class SimulationConfig {
     private int N;
     private double radius;
     private int totalTime;
+    private int frameSize;
     private double mass;
     private boolean movable;
 
@@ -37,5 +38,9 @@ public class SimulationConfig {
 
     public boolean getMovable() {
         return movable;
+    }
+
+    public int getFrameSize() {
+        return frameSize;
     }
 }
