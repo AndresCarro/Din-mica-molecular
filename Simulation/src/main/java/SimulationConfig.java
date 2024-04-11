@@ -5,6 +5,7 @@ public class SimulationConfig {
     private double radius;
     private int totalTime;
     private double mass;
+    private boolean movable;
 
     public SimulationConfig(){
 
@@ -32,5 +33,9 @@ public class SimulationConfig {
 
     public int getTotalTime() {
         return totalTime;
+    }
+
+    public boolean isMovable() {
+        return movable;
     }
 }

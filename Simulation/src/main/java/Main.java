@@ -10,10 +10,9 @@ public class Main {
             return;
         }
 
-        SimulationFactory simulator = new SimulationFactory(config.getL(), config.getN(), config.getRadius(), config.getSpeed(), config.getMass());
+        SimulationFactory simulator = new SimulationFactory(config.getL(), config.getN(), config.getRadius(), config.getSpeed(), config.getMass(), config.isMovable());
         simulator.simulate(config.getTotalTime());
     }
-
 
     public static SimulationConfig readConfig(String path){
         Gson gson = new Gson();

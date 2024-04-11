@@ -2,16 +2,10 @@ import java.util.*;
 
 public class CrashList {
 
-    private List<Crash> crashList;
+    private final List<Crash> crashList;
 
     public CrashList() {
         this.crashList = new LinkedList<>();
-    }
-
-    public Crash nextCrash() {
-        Crash nextCrash = this.crashList.iterator().next();
-        this.crashList.remove(nextCrash);
-        return nextCrash;
     }
 
     public void createCrash(Particle particleA, Particle particleB) {
@@ -61,6 +55,12 @@ public class CrashList {
             index++;
         }
         crashList.add(crash);
+    }
+
+    public Crash nextCrash() {
+        Crash nextCrash = this.crashList.iterator().next();
+        this.crashList.remove(nextCrash);
+        return nextCrash;
     }
 
     public void removeCrash(Crash crash) {

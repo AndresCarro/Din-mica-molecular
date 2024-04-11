@@ -12,22 +12,17 @@ public class ParticlesList {
         return particles;
     }
 
-    public boolean addParticle(Particle particle){
-        return particles.add(particle);
-    }
-
-    public boolean removeParticle(Particle particle){
-        return particles.remove(particle);
-    }
-
     public boolean insertNewParticle(Particle newParticle){
         for(Particle particle : particles){
             if(particle.isOverlap(newParticle)){
                 return false;
             }
         }
-        this.addParticle(newParticle);
+        this.particles.add(newParticle);
         return true;
     }
 
+    public boolean removeParticle(Particle particle){
+        return particles.remove(particle);
+    }
 }

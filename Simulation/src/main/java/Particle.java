@@ -7,10 +7,10 @@ public class Particle {
     private double y;
     private double speed;
     private double angle;
-    private double radius;
-    private double mass;
-    private Crash[] crashesList;
-    private double L;
+    private final double radius;
+    private final double mass;
+    private final Crash[] crashesList;
+    private final double L;
     private int N;
 
     public Particle(double L, double mass, double radius, int N){
@@ -50,6 +50,40 @@ public class Particle {
 
     public void updateCrash(Particle particle, Crash crash){
         this.crashesList[Solid.values().length + particle.id] = crash;
+    }
+
+    public double timeToSolid(Solid solid){
+        double Vx = this.speed * Math.cos(this.angle);
+        double Vy = this.speed * Math.sin(this.angle);
+
+        switch (solid) {
+            case NONE, CENTER -> System.out.println("No debería estar aca!!!");
+            case RIGHT -> {
+                if(Vx < 0){
+                    return Double.POSITIVE_INFINITY;
+                }
+                return (this.L - this.radius - this.x) / Vx;
+            }
+            case LEFT -> {
+                if(Vx > 0){
+                    return Double.POSITIVE_INFINITY;
+                }
+                return (-1) * (this.x - this.radius) / Vx;
+            }
+            case UP -> {
+                if(Vy < 0){
+                    return Double.POSITIVE_INFINITY;
+                }
+                return (this.L - this.radius - this.y) / Vy;
+            }
+            case DOWN -> {
+                if(Vy > 0){
+                    return Double.POSITIVE_INFINITY;
+                }
+                return (-1) * (this.y - this.radius) / Vy;
+            }
+        }
+        return Double.POSITIVE_INFINITY;
     }
 
     public Crash getCrash(Particle particle){
@@ -103,49 +137,6 @@ public class Particle {
     public Crash[] getCrashesList() {
         return crashesList;
     }
-
-    public double timeToSolid(Solid solid){
-        switch (solid) {
-            // Choque entre particulas
-            case NONE -> System.out.println("No debería estar aca");
-            // Choque con borde derecho
-            case RIGHT -> {
-                double Vx = this.speed * Math.cos(this.angle);
-                if(Vx < 0){
-                    return Double.POSITIVE_INFINITY;
-                }
-                return (this.L - this.radius - this.x) / Vx;
-            }
-            // Choque con borde izquierdo
-            case LEFT -> {
-                double Vx = this.speed * Math.cos(this.angle);
-                if(Vx > 0){
-                    return Double.POSITIVE_INFINITY;
-                }
-                return (-1) * (this.x - this.radius) / Vx;
-            }
-            // Choque con borde superior
-            case UP -> {
-                double Vy = this.speed * Math.sin(this.angle);
-                if(Vy < 0){
-                    return Double.POSITIVE_INFINITY;
-                }
-                return (this.L - this.radius - this.y) / Vy;
-            }
-            // Choque con borde inferior
-            case DOWN -> {
-                double Vy = this.speed * Math.sin(this.angle);
-                if(Vy > 0){
-                    return Double.POSITIVE_INFINITY;
-                }
-                return (-1) * (this.y - this.radius) / Vy;
-            }
-            // Choque con centro
-            case CENTER -> System.out.println("No debería estar aca");
-        }
-        return 0;
-    }
-
 
     public double getL() {
         return L;

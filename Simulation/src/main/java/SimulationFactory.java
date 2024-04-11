@@ -5,10 +5,13 @@ public class SimulationFactory {
     private final ParticlesList ParticlesList;
     private final CrashList CrashList;
     private final String outputFile;
+    private final boolean movable;
 
-    public SimulationFactory(double L, int N, double radius, double speed, double mass) {
+    public SimulationFactory(double L, int N, double radius, double speed, double mass, boolean movable) {
         ParticlesList = new ParticlesList();
         CrashList = new CrashList();
+
+        this.movable = movable;
         this.outputFile = "Simulation/output/SimulationData_" + N + "_" + (int) L + ".csv";
 
         createParticles(N, L, radius, speed, mass);
@@ -31,21 +34,17 @@ public class SimulationFactory {
             while( actualTime < maxTime){
                 for(Particle particle : ParticlesList.getParticles()){
                     particle.move(actualTime - prevTime);
+                    writer_data.write("\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + actualTime + "," + crash.getSolid().name() + "," + crash.getParticleA().getId() + "," + crash.getParticleB().getId());
                 }
 
                 crash.makeCrash();
                 changeCrashes(crash, actualTime);
 
-                for(Particle particle : ParticlesList.getParticles()){
-                    writer_data.write( "\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() +
-                            "," + particle.getSpeed() + "," + particle.getAngle() + "," + actualTime + "," +
-                            crash.getSolid().name() + "," + crash.getParticleA().getId() + "," + crash.getParticleB().getId());
-                }
-
                 prevTime = actualTime;
                 crash = CrashList.nextCrash();
                 actualTime = crash.getTime();
             }
+
             writer_data.close();
         } catch(IOException e){
             System.out.println("Error al escribir en el archivo: " + e.getMessage());
@@ -72,7 +71,6 @@ public class SimulationFactory {
         }
     }
 
-    // Cambio los choques asociados a las particulas que chocaron
     public void changeCrashes(Crash crash, double actualTime){
         for(int i=0; i<ParticlesList.getParticles().size(); i++){
             if(ParticlesList.getParticles().get(i).isOverlap(crash.getParticleB())){
