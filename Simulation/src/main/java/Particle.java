@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Particle {
-    private final double CENTER_RADIUS = 0.5;
+    private final double CENTER_RADIUS = 0.005;
     private final double CENTER_MASS = 3;
     private final int id;
     private double x;

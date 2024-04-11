@@ -1,11 +1,11 @@
 {
   "L": 10,
-  "N": 10,
+  "N": 3,
   "speed": 1,
-  "radius": 0.1,
+  "radius": 0.001,
   "totalTime": 5,
-  "frameSize": 4,
+  "frameSize": 10,
   "mass" : 1,
-  "circleRadius": 0.5,
-  "movable": true
+  "circleRadius": 0.005,
+  "movable": false
 }

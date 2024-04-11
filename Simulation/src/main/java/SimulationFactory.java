@@ -33,14 +33,19 @@ public class SimulationFactory {
             int counter = 0;
 
             while( actualTime < maxTime){
-                for(Particle particle : ParticlesList.getParticles()){
-                    particle.move(actualTime - prevTime);
-                    counter++;
-                    if(counter == frameSize){
+                counter++;
+                if(counter == frameSize){
+                    counter = 0;
+                    for(Particle particle : ParticlesList.getParticles()){
+                        particle.move(actualTime - prevTime);
                         writer_data.write("\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + actualTime + "," + crash.getSolid().name() + "," + crash.getParticleA().getId() + "," + crash.getParticleB().getId());
-                        counter = 0;
+                    }
+                }else{
+                    for(Particle particle : ParticlesList.getParticles()){
+                        particle.move(actualTime - prevTime);
                     }
                 }
+
 
                 crash.makeCrash();
                 changeCrashes(crash, actualTime);
