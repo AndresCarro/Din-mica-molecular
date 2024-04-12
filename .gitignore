@@ -14,3 +14,5 @@ Visualization/src/venv
 Visualization/src/Visualization.iml
 
 TP3.iml
+
+*.pyc
