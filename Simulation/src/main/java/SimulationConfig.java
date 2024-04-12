@@ -3,7 +3,7 @@ public class SimulationConfig {
     private double speed;
     private int N;
     private int totalCrash;
-    private int frameSize;
+    private int frameCrash;
     private boolean movable;
 
     public SimulationConfig(){
@@ -30,7 +30,7 @@ public class SimulationConfig {
         return movable;
     }
 
-    public int getFrameSize() {
-        return frameSize;
+    public int getFrameCrash() {
+        return frameCrash;
     }
 }

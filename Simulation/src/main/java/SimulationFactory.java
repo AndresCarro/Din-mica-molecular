@@ -9,18 +9,18 @@ public class SimulationFactory {
     private final String outputFile;
     private final boolean movable;
     private final double maxCrash;
-    private final double frameSize;
+    private final double frameCrash;
 
-    public SimulationFactory(double L, int N, double speed, boolean movable, double maxCrash, double frameSize) {
+    public SimulationFactory(double L, int N, double speed, boolean movable, double maxCrash, double frameCrash) {
         ParticlesList = new ParticlesList();
         CrashList = new CrashList();
 
         this.maxCrash =maxCrash;
-        this.frameSize=frameSize;
+        this.frameCrash =frameCrash;
         this.movable = movable;
         this.outputFile = "Simulation/output/SimulationData_" + N + "_" + (int) L + ".csv";
         String outputStatus = "Simulation/output/StateData_" + N + "_" + (int) L + ".json";
-        writeStatus(outputStatus, L,  N, speed, movable, maxCrash, frameSize);
+        writeStatus(outputStatus, L,  N, speed, movable, maxCrash, this.frameCrash);
 
         createParticles(N, L, speed);
         setTimes();
@@ -42,7 +42,7 @@ public class SimulationFactory {
 
             while( counterCrash < this.maxCrash){
                 counterCrash++;
-                if(counterCrash % this.frameSize == 0){
+                if(counterCrash % this.frameCrash == 0){
                     for(Particle particle : ParticlesList.getParticles()){
                         particle.move(actualTime - prevTime);
                         writer_data.write("\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + actualTime + "," + crash.getSolid().name() + "," + crash.getParticleA().getId() + "," + crash.getParticleB().getId());
