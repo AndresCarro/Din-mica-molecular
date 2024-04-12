@@ -15,6 +15,7 @@ public class SimulationFactory {
         ParticlesList = new ParticlesList();
         CrashList = new CrashList();
 
+        // revisar la asignacion en algun momento
         this.maxCrash =maxCrash;
         this.frameCrash =frameCrash;
         this.movable = movable;
@@ -32,7 +33,7 @@ public class SimulationFactory {
             writer_data.write("id,x,y,vel,angulo,time,crash,ParticleA,ParticleB");
 
             for(Particle particle : ParticlesList.getParticles()){
-                writer_data.write( "\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + 0 + "," + "INIT");
+                writer_data.write( "\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + 0 + "," + "INIT,0,0");
             }
 
             Crash crash = CrashList.nextCrash();
