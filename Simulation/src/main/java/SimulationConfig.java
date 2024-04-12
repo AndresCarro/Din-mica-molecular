@@ -2,7 +2,7 @@ public class SimulationConfig {
     private double L;
     private double speed;
     private int N;
-    private int totalTime;
+    private int totalCrash;
     private int frameSize;
     private boolean movable;
 
@@ -22,8 +22,8 @@ public class SimulationConfig {
         return N;
     }
 
-    public int getTotalTime() {
-        return totalTime;
+    public int getTotalCrash() {
+        return totalCrash;
     }
 
     public boolean getMovable() {

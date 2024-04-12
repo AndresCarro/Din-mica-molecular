@@ -8,19 +8,19 @@ public class SimulationFactory {
     private final CrashList CrashList;
     private final String outputFile;
     private final boolean movable;
-    private final double maxTime;
+    private final double maxCrash;
     private final double frameSize;
 
-    public SimulationFactory(double L, int N, double speed, boolean movable, double maxTime, double frameSize) {
+    public SimulationFactory(double L, int N, double speed, boolean movable, double maxCrash, double frameSize) {
         ParticlesList = new ParticlesList();
         CrashList = new CrashList();
 
-        this.maxTime=maxTime;
+        this.maxCrash =maxCrash;
         this.frameSize=frameSize;
         this.movable = movable;
         this.outputFile = "Simulation/output/SimulationData_" + N + "_" + (int) L + ".csv";
         String outputStatus = "Simulation/output/StateData_" + N + "_" + (int) L + ".json";
-        writeStatus(outputStatus, L,  N, speed, movable, maxTime, frameSize);
+        writeStatus(outputStatus, L,  N, speed, movable, maxCrash, frameSize);
 
         createParticles(N, L, speed);
         setTimes();
@@ -38,12 +38,11 @@ public class SimulationFactory {
             Crash crash = CrashList.nextCrash();
             double prevTime = 0;
             double actualTime = crash.getTime();
-            int counter = 0;
+            int counterCrash = 0;
 
-            while( actualTime < this.maxTime){
-                counter++;
-                if(counter == this.frameSize){
-                    counter = 0;
+            while( counterCrash < this.maxCrash){
+                counterCrash++;
+                if(counterCrash % this.frameSize == 0){
                     for(Particle particle : ParticlesList.getParticles()){
                         particle.move(actualTime - prevTime);
                         writer_data.write("\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + actualTime + "," + crash.getSolid().name() + "," + crash.getParticleA().getId() + "," + crash.getParticleB().getId());
