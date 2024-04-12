@@ -14,7 +14,7 @@ public class Particle {
     private int N;
 
     public Particle(double L, int N){
-        this.id = N-1;
+        this.id = N;
         this.x = L/2;
         this.y = L/2;
         this.L = L;
@@ -22,7 +22,7 @@ public class Particle {
         this.angle = 0;
         this.radius = Utils.CENTER_RADIUS;
         this.mass = Utils.CENTER_MASS;
-        this.crashesList = new Crash[Solid.values().length + N];
+        this.crashesList = new Crash[Solid.values().length + N+1];
     }
 
     public Particle(double L, double speed, int N, int id){
@@ -35,7 +35,7 @@ public class Particle {
         this.speed = speed;
         this.angle = Math.random() * 2 * Math.PI;
         this.N = N;
-        this.crashesList = new Crash[Solid.values().length + N];
+        this.crashesList = new Crash[Solid.values().length + N+1];
     }
 
     public void move(double time){

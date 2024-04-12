@@ -60,8 +60,8 @@ public class Crash {
         double dy = particleA.getY() - particleB.getY();
         double alpha = Math.atan2(dy, dx);
 
-        double newVx = ( (-1) * Math.cos(alpha) * Math.cos(alpha) + Math.sin(alpha) * Math.sin(alpha) ) * AVx + (-1) * Math.sin(alpha) * Math.cos(alpha) * AVy;
-        double newVy = ( (-1) * Math.sin(alpha) * Math.cos(alpha)) * AVx + ((-1) * Math.sin(alpha) * Math.sin(alpha) + Math.cos(alpha) * Math.cos(alpha)) * AVy;
+        double newVx = ( (-1) * Math.cos(alpha) * Math.cos(alpha) + Math.sin(alpha) * Math.sin(alpha) ) * AVx + (-2) * Math.sin(alpha) * Math.cos(alpha) * AVy;
+        double newVy = ( (-2) * Math.sin(alpha) * Math.cos(alpha)) * AVx + ((-1) * Math.sin(alpha) * Math.sin(alpha) + Math.cos(alpha) * Math.cos(alpha)) * AVy;
 
         particleA.setSpeed(Math.pow(Math.pow(newVx, 2) + Math.pow(newVy, 2), 0.5));
         particleA.setAngle(Math.atan2(newVy, newVx));
@@ -98,13 +98,13 @@ public class Crash {
     }
 
     public double[] deltaR(){
-        return new double[]{particleA.getX() - particleB.getX(), particleA.getY() - particleB.getY()};
+        return new double[]{particleB.getX() - particleA.getX(), particleB.getY() - particleA.getY()};
     }
 
     public double[] deltaV() {
         return new double[]{
-                particleA.getSpeed() * Math.cos(particleA.getAngle()) - particleB.getSpeed() * Math.cos(particleB.getAngle()),
-                particleA.getSpeed() * Math.sin(particleA.getAngle()) - particleB.getSpeed() * Math.sin(particleB.getAngle())
+                particleB.getSpeed() * Math.cos(particleB.getAngle()) - particleA.getSpeed() * Math.cos(particleA.getAngle()),
+                particleB.getSpeed() * Math.sin(particleB.getAngle()) - particleA.getSpeed() * Math.sin(particleA.getAngle())
         };
     }
 

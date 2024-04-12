@@ -32,10 +32,6 @@ public class SimulationFactory {
             FileWriter writer_data = new FileWriter(this.outputFile);
             writer_data.write("id,x,y,vel,angulo,time,crash,ParticleA,ParticleB");
 
-            for(Particle particle : ParticlesList.getParticles()){
-                writer_data.write( "\n" + particle.getId() + "," + particle.getX() + "," + particle.getY() + "," + particle.getSpeed() + "," + particle.getAngle() + "," + 0 + "," + "INIT,0,0");
-            }
-
             Crash crash = CrashList.nextCrash();
             double prevTime = 0;
             double actualTime = crash.getTime();
@@ -72,7 +68,7 @@ public class SimulationFactory {
     private void createParticles(int N, double L, double speed) {
         int NewN = N;
         if(this.movable){
-            NewN += 1;
+            NewN += 2;
         }
         Particle centerParticle = new Particle(L, N);
         this.ParticlesList.insertNewParticle(centerParticle);
