@@ -9,7 +9,7 @@ OUTPUT_PATH = '../../Simulation/output/SimulationData_'
 OUTPUT_CSV = '../output/nuevos_'
 N = 200
 L = 0
-V = 1
+V = 10
 T_ESTACIONARIO = 1000
 # ---------------------------------------------------
 
