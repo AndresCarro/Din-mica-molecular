@@ -5,6 +5,7 @@ import json
 import sys
 import cv2
 import matplotlib.pyplot as plt
+from pressure_vs_temperature import CrashSpeed
 
 
 # ---------------------------------------------------
@@ -13,30 +14,18 @@ import matplotlib.pyplot as plt
 OUTPUT_PATH = '../../Simulation/output/'
 DEFAULT_INPUT_PATH = '../../Simulation/input/'
 AVG_PATH = '../output/'
-N = 250
 L = 0
+N = 250
+SPEED = 1
 # ---------------------------------------------------
 
 # ---------------------------------------------------
 # CONSTANTES
 # ---------------------------------------------------
-DELTA_T = 0.001
+DELTA_T = 0.0001
 MASS = 1
 NON_WALL_OBJECTS = ['INIT', 'CENTER', 'NONE']
 # ---------------------------------------------------
-
-
-class CrashSpeed:
-    def __init__(self, speed_before, angle, wall):
-        self.v_o = speed_before
-        self.angle = angle
-        self.wall = wall
-
-    def calculate_delta_normal_speed(self):
-        if self.wall == 'UP' or self.wall == 'DOWN':
-            return - self.v_o * np.sin(self.angle) - self.v_o * np.sin(self.angle)
-        elif self.wall == 'LEFT' or self.wall == 'RIGHT':
-            return - self.v_o * np.cos(self.angle) - self.v_o * np.cos(self.angle)
 
 
 def calculate_pressure_values(particles_coords):
@@ -48,7 +37,8 @@ def calculate_pressure_values(particles_coords):
 
     for time_frame in time_frames:
         current_particle_coords = particles_coords[particles_coords['time'] == time_frame]
-
+        current_time += time_frame
+        print(current_time)
         if current_time - delta_t_limit > DELTA_T:
             pressure_values.append(sum(current_velocities))
             delta_t_limit += DELTA_T
@@ -56,38 +46,29 @@ def calculate_pressure_values(particles_coords):
         # Save delta_v values for particles that have crashed into a wall
         for index, fila in current_particle_coords.iterrows():
             if fila['crash'] not in NON_WALL_OBJECTS and fila['id'] == fila['ParticleA']:
-                current_time += fila['time']
                 current_velocities.append(CrashSpeed(fila['vel'], fila['angulo'],
                                                      fila['crash']).calculate_delta_normal_speed() * (MASS / DELTA_T))
-                break
+            elif fila['crash'] == 'CENTER':
+                pass
+
 
     return pressure_values
 
 
-def calculate_p_vs_t(speeds):
-    graph_pressure_values = []
-
-    for speed in speeds:
-        particles_coords = pd.read_csv(OUTPUT_PATH + 'SimulationData_' + str(N) + '_' + str(L)
-                                       + "_" + str(speed) + '.csv')
-        graph_pressure_values = sum(calculate_pressure_values(particles_coords))
-
-    return graph_pressure_values
-
-
 def main():
-    speeds = [1, 3, 6, 10]
-    temperature_values = [speed**2 for speed in speeds]
-    pressure_values = calculate_p_vs_t(speeds)
+    particles_coords = pd.read_csv(OUTPUT_PATH + 'SimulationData_' + str(N) + '_' + str(L)
+                                   + "_" + str(SPEED) + '.csv')
+    pressure_values = calculate_pressure_values(particles_coords)
+    print(pressure_values)
+    time_values = []
 
-    # Step 3: Create a figure and axis object
+    for index in range(len(pressure_values)):
+        time_values.append(index * DELTA_T)
+
     fig, ax = plt.subplots()
+    ax.plot(time_values, pressure_values)
 
-    # Step 4: Plot your data
-    ax.plot(temperature_values, pressure_values)
-
-    # Step 5: Customize your graph
-    ax.set_xlabel('Temperatura (v²)')
+    ax.set_xlabel('Tiempo [s]')
     ax.set_ylabel('Presión')
     ax.set_title('Conchonaro')
 
