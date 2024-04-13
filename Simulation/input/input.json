@@ -1,8 +1,8 @@
 {
   "L": 0.1,
   "N": 200,
-  "speed": 3.6,
-  "totalCrash": 1000,
-  "frameCrash": 1,
-  "movable": false
+  "speed": 1,
+  "totalCrash": 2000,
+  "frameCrash": 10,
+  "movable": true
 }
