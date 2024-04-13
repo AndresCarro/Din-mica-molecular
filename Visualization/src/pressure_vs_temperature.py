@@ -34,9 +34,9 @@ class CrashSpeed:
 
     def calculate_delta_normal_speed(self):
         if self.wall == 'UP' or self.wall == 'DOWN':
-            return - self.v_o * np.sin(self.angle) - self.v_o * np.sin(self.angle)
+            return abs(- (self.v_o * np.sin(self.angle)) - (self.v_o * np.sin(self.angle)))
         elif self.wall == 'LEFT' or self.wall == 'RIGHT':
-            return - self.v_o * np.cos(self.angle) - self.v_o * np.cos(self.angle)
+            return abs(- (self.v_o * np.cos(self.angle)) - (self.v_o * np.cos(self.angle)))
 
 
 def calculate_pressure_values(particles_coords):
@@ -48,9 +48,11 @@ def calculate_pressure_values(particles_coords):
 
     for time_frame in time_frames:
         current_particle_coords = particles_coords[particles_coords['time'] == time_frame]
+        current_time = time_frame
 
         if current_time - delta_t_limit > DELTA_T:
             pressure_values.append(sum(current_velocities))
+            current_velocities = []
             delta_t_limit += DELTA_T
 
         # Save delta_v values for particles that have crashed into a wall
@@ -58,7 +60,7 @@ def calculate_pressure_values(particles_coords):
             if fila['crash'] not in NON_WALL_OBJECTS and fila['id'] == fila['ParticleA']:
                 current_time += fila['time']
                 current_velocities.append(CrashSpeed(fila['vel'], fila['angulo'],
-                                                     fila['crash']).calculate_delta_normal_speed() * (MASS / DELTA_T))
+                                                     fila['crash']).calculate_delta_normal_speed() / DELTA_T)
                 break
 
     return pressure_values
