@@ -7,7 +7,7 @@ def read_data(velocities):
 
     for velocity in velocities:
         velocity_int = int(velocity)
-        df = pd.read_csv(f'../output/total_200_0_{velocity_int}.csv')
+        df = pd.read_csv(f'../output/total_250_0_{velocity_int}.csv')
         data.append(df)
     
     return data
@@ -18,7 +18,7 @@ def best_c_alg(data):
     init_c = 0
     best_c = 0
     max_c = data['choques'].max()/data['tiempo'].max() * 1.5
-    step = 100
+    step = 20
     apreciacion = max_c / step
     min_error = float('inf')
 

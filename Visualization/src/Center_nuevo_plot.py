@@ -7,7 +7,7 @@ def read_data(velocities):
 
     for velocity in velocities:
         velocity_int = int(velocity)
-        df = pd.read_csv(f'../output/nuevos_200_0_{velocity_int}.csv')
+        df = pd.read_csv(f'../output/nuevos_250_0_{velocity_int}.csv')
         data.append(df)
     
     return data
@@ -29,8 +29,8 @@ def plot_corte(data, porcentaje, N):
 
     plt.axhline(y=porcentaje, color='red', linestyle='--', linewidth=2)
     plt.xlabel('Tiempo [s]', fontsize=16)
-    plt.ylabel('Choques nuevos', fontsize=16)
-    plt.legend(bbox_to_anchor=(0.5, 1.1), loc='upper center', borderaxespad=0, fontsize=12, ncol=3)
+    plt.ylabel('%Choques nuevos', fontsize=16)
+    plt.legend(bbox_to_anchor=(0.5, 1.1), loc='upper center', borderaxespad=0, fontsize=12, ncol=4)
     plt.grid(False)
     plt.show()
 
@@ -45,7 +45,7 @@ def main():
     velocities = [1, 3.6, 10]
     data = read_data(velocities)
 
-    porcentaje = 5
+    porcentaje = 20
     N = 200
     N_corte = N* (porcentaje/100)
     plot_corte(data, porcentaje, N)

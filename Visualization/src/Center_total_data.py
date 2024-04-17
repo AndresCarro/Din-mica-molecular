@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 # ---------------------------------------------------
 OUTPUT_PATH = '../../Simulation/output/SimulationData_'
 OUTPUT_CSV = '../output/total_'
-N = 200
+N = 250
 L = 0
-V = 10
+V = 3
 T_ESTACIONARIO = 1000
 # ---------------------------------------------------
 

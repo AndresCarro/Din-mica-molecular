@@ -98,7 +98,7 @@ public class SimulationFactory {
 
     public void changeCrashes(Crash crash, double actualTime){
         for(int i=0; i<ParticlesList.getParticles().size(); i++){
-            if(ParticlesList.getParticles().get(i).isOverlap(crash.getParticleB())){
+            if(ParticlesList.getParticles().get(i).getId()  == crash.getParticleB().getId() && crash.getSolid() == Solid.NONE){
                 CrashList.updateCrash(crash.getParticleA(), crash.getParticleB(), Double.POSITIVE_INFINITY);
             }else{
                 CrashList.updateCrash(crash.getParticleA(), ParticlesList.getParticles().get(i), actualTime);
@@ -112,7 +112,7 @@ public class SimulationFactory {
 
         if(crash.getSolid() == Solid.NONE){
             for(int i=0; i<ParticlesList.getParticles().size(); i++){
-                if(ParticlesList.getParticles().get(i).isOverlap(crash.getParticleA())){
+                if(ParticlesList.getParticles().get(i).getId()  == crash.getParticleA().getId() && crash.getSolid() == Solid.NONE){
                     CrashList.updateCrash(crash.getParticleB(), crash.getParticleA(), Double.POSITIVE_INFINITY);
                 }else{
                     CrashList.updateCrash(crash.getParticleB() ,ParticlesList.getParticles().get(i), actualTime);
