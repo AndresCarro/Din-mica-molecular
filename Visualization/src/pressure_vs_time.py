@@ -16,13 +16,13 @@ DEFAULT_INPUT_PATH = '../../Simulation/input/'
 AVG_PATH = '../output/'
 L = 0
 N = 250
-SPEED = 1
+SPEED = 3
 # ---------------------------------------------------
 
 # ---------------------------------------------------
 # CONSTANTES
 # ---------------------------------------------------
-DELTA_T = 0.0001
+DELTA_T = 3.78443 * 10**(-3)
 MASS = 1
 NON_WALL_OBJECTS = ['INIT', 'CENTER', 'NONE']
 # ---------------------------------------------------
@@ -37,20 +37,21 @@ def calculate_pressure_values(particles_coords):
 
     for time_frame in time_frames:
         current_particle_coords = particles_coords[particles_coords['time'] == time_frame]
-        current_time += time_frame
-        print(current_time)
+        current_time = time_frame
+
         if current_time - delta_t_limit > DELTA_T:
             pressure_values.append(sum(current_velocities))
+            current_velocities = []
             delta_t_limit += DELTA_T
 
         # Save delta_v values for particles that have crashed into a wall
         for index, fila in current_particle_coords.iterrows():
             if fila['crash'] not in NON_WALL_OBJECTS and fila['id'] == fila['ParticleA']:
                 current_velocities.append(CrashSpeed(fila['vel'], fila['angulo'],
-                                                     fila['crash']).calculate_delta_normal_speed() * (MASS / DELTA_T))
+                                                     fila['crash']).calculate_delta_normal_speed() / DELTA_T)
+                break
             elif fila['crash'] == 'CENTER':
                 pass
-
 
     return pressure_values
 
@@ -59,7 +60,7 @@ def main():
     particles_coords = pd.read_csv(OUTPUT_PATH + 'SimulationData_' + str(N) + '_' + str(L)
                                    + "_" + str(SPEED) + '.csv')
     pressure_values = calculate_pressure_values(particles_coords)
-    print(pressure_values)
+    print('Pressure values: ', pressure_values)
     time_values = []
 
     for index in range(len(pressure_values)):

@@ -12,17 +12,20 @@ import cv2
 OUTPUT_PATH = '../../Simulation/output/'
 DEFAULT_INPUT_PATH = '../../Simulation/input/'
 AVG_PATH = '../output/'
-L = 10
+L = 0.1
+FAKE_L = 0
 RADIUS_PARTICLES = 0.001
-N = 3
+N = 250
+SPEED = 1
 RADIUS_CIRCLE = 0.005
 # ---------------------------------------------------
 
-PARTICLES_COORDINATES_FILE2 = ('../../Simulation/output/SimulationData_' + str(N) + '_' + str(L) + '.csv')
+PARTICLES_COORDINATES_FILE2 = ('../../Simulation/output/SimulationData_' + str(N) + '_' + str(FAKE_L) +
+                               '_' + str(SPEED) + '.csv')
 CONFIG_FILE = '../../Simulation/input/input.json'
 OPENCV_OUTPUT_FILENAME = '../output/open_cv_output'
 MP4_FORMAT = 'mp4'
-SCALE_FACTOR = 150
+SCALE_FACTOR = 10000
 WALL_COLOR = (255, 255, 255)
 WALL_THICKNESS = 200
 PARTICLE_COLOR = (255, 0, 0)
@@ -31,20 +34,21 @@ CIRCLE_COLOR = (133, 133, 133)
 
 def complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, circle_radius):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    video_writer = cv2.VideoWriter(OPENCV_OUTPUT_FILENAME + '.' + MP4_FORMAT, fourcc, 10.0, (L*SCALE_FACTOR,
-                                                                                             L*SCALE_FACTOR))
+    SCALED_L = int(L * SCALE_FACTOR)
+    video_writer = cv2.VideoWriter(OPENCV_OUTPUT_FILENAME + '.' + MP4_FORMAT, fourcc, 60.0, (SCALED_L,
+                                                                                             SCALED_L))
     for timeFrame in timeFrames:
         current_particle_coords = particles_coords[particles_coords['time'] == timeFrame]
-        frame = np.full((L*SCALE_FACTOR, L*SCALE_FACTOR, 3), 255, dtype=np.uint8)
+        frame = np.full((SCALED_L, SCALED_L, 3), 255, dtype=np.uint8)
 
-        # Draw walls
-        cv2.line(frame, (0, 0), (L * SCALE_FACTOR, 0), WALL_COLOR, WALL_THICKNESS)
-        cv2.line(frame, (0, 0), (0, L * SCALE_FACTOR), WALL_COLOR, WALL_THICKNESS)
-        cv2.line(frame, (L * SCALE_FACTOR, 0), (L-1, L * SCALE_FACTOR), WALL_COLOR, WALL_THICKNESS)
-        cv2.line(frame, (0, L * SCALE_FACTOR), (L * SCALE_FACTOR, L * SCALE_FACTOR), WALL_COLOR, WALL_THICKNESS)
+        '''# Draw walls
+        cv2.line(frame, (0, 0), (SCALED_L, 0), WALL_COLOR, WALL_THICKNESS)
+        cv2.line(frame, (0, 0), (0, SCALED_L), WALL_COLOR, WALL_THICKNESS)
+        cv2.line(frame, (SCALED_L, 0), (L-1, SCALED_L), WALL_COLOR, WALL_THICKNESS)
+        cv2.line(frame, (0, SCALED_L), (SCALED_L, SCALED_L), WALL_COLOR, WALL_THICKNESS)'''
 
         # Draw middle circle
-        cv2.circle(frame, tuple([int((L/2)*SCALE_FACTOR), int((L/2)*SCALE_FACTOR)]), int(circle_radius*SCALE_FACTOR),
+        cv2.circle(frame, tuple([int(SCALED_L/2), int(SCALED_L/2)]), int(circle_radius*SCALE_FACTOR),
                    CIRCLE_COLOR, -1)
 
 
@@ -76,9 +80,9 @@ if __name__ == '__main__':
     particles_coords = pd.read_csv(PARTICLES_COORDINATES_FILE2)
 
     timeFrames = particles_coords['time'].unique()
-    particle_radius = config['radius']
+    particle_radius = RADIUS_PARTICLES
 
     # OpenCV #
     print('Drawing particles with opencv...')
-    complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, config['circleRadius'])
+    complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, RADIUS_CIRCLE)
     print('DONE!')
