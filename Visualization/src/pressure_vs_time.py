@@ -14,15 +14,16 @@ from pressure_vs_temperature import CrashSpeed
 OUTPUT_PATH = '../../Simulation/output/'
 DEFAULT_INPUT_PATH = '../../Simulation/input/'
 AVG_PATH = '../output/'
-L = 0
+FAKE_L = 0
 N = 250
-SPEED = 3
+SPEED = 1
 # ---------------------------------------------------
 
 # ---------------------------------------------------
 # CONSTANTES
 # ---------------------------------------------------
-DELTA_T = 3.78443 * 10**(-3)
+DELTA_T = 1.820695 / 200
+L = 0.01
 MASS = 1
 NON_WALL_OBJECTS = ['INIT', 'CENTER', 'NONE']
 # ---------------------------------------------------
@@ -30,34 +31,39 @@ NON_WALL_OBJECTS = ['INIT', 'CENTER', 'NONE']
 
 def calculate_pressure_values(particles_coords):
     time_frames = particles_coords['time'].unique()
-    pressure_values = []
+    wall_pressure_values = []
+    obstacle_pressure_values = []
     current_time = 0
     delta_t_limit = 0
-    current_velocities = []
+    current_wall_velocities = []
+    current_obstacle_velocities = []
+    count_wall_crashes = 0
 
     for time_frame in time_frames:
         current_particle_coords = particles_coords[particles_coords['time'] == time_frame]
         current_time = time_frame
 
         if current_time - delta_t_limit > DELTA_T:
-            pressure_values.append(sum(current_velocities))
-            current_velocities = []
+            wall_pressure_values.append(sum(current_wall_velocities))
+            count_wall_crashes = len(current_wall_velocities)
+            print('Amount of wall crashes in this delta:', count_wall_crashes)
+            current_wall_velocities = []
             delta_t_limit += DELTA_T
 
         # Save delta_v values for particles that have crashed into a wall
         for index, fila in current_particle_coords.iterrows():
             if fila['crash'] not in NON_WALL_OBJECTS and fila['id'] == fila['ParticleA']:
-                current_velocities.append(CrashSpeed(fila['vel'], fila['angulo'],
-                                                     fila['crash']).calculate_delta_normal_speed() / DELTA_T)
+                current_wall_velocities.append(CrashSpeed(fila['vel'], fila['angulo'],
+                                                     fila['crash']).calculate_delta_normal_speed() / (DELTA_T * 4 * L))
                 break
             elif fila['crash'] == 'CENTER':
                 pass
 
-    return pressure_values
+    return wall_pressure_values
 
 
 def main():
-    particles_coords = pd.read_csv(OUTPUT_PATH + 'SimulationData_' + str(N) + '_' + str(L)
+    particles_coords = pd.read_csv(OUTPUT_PATH + 'SimulationData_' + str(N) + '_' + str(FAKE_L)
                                    + "_" + str(SPEED) + '.csv')
     pressure_values = calculate_pressure_values(particles_coords)
     print('Pressure values: ', pressure_values)
@@ -71,7 +77,7 @@ def main():
 
     ax.set_xlabel('Tiempo [s]')
     ax.set_ylabel('Presión')
-    ax.set_title('Conchonaro')
+    ax.set_title('')
 
     # Step 6: Show or save the graph
     plt.show()
