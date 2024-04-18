@@ -11,8 +11,8 @@ grouped['velocity_squared'] = grouped['velocity'] ** 2
 
 # Graficar
 plt.figure(figsize=(10, 6))
-plt.errorbar(grouped['velocity_squared'], grouped['mean'], yerr=grouped['std'], fmt='-o')
+plt.errorbar(grouped['velocity_squared'], grouped['mean'], yerr=grouped['std'], fmt='o')
 plt.xlabel('Temperatura(V²)', fontsize=16)
-plt.ylabel('Tiempo[S]', fontsize=16)
+plt.ylabel('Tiempo[s]', fontsize=16)
 plt.grid(False)
 plt.show()

@@ -42,7 +42,7 @@ def save_data(velocities, times):
 
 def main():
 
-    velocities = [1, 3.6, 10]
+    velocities = [1, 3, 6, 10]
     data = read_data(velocities)
 
     porcentaje = 20

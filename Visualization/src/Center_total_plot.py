@@ -56,7 +56,7 @@ def plot_c_data(data, best_c):
 
     plt.xlabel('Tiempo [s]', fontsize=16)
     plt.ylabel('Choques nuevos', fontsize=16)
-    plt.legend(bbox_to_anchor=(0.5, 1.1), loc='upper center', borderaxespad=0, fontsize=12, ncol=3)
+    plt.legend(bbox_to_anchor=(0.5, 1.1), loc='upper center', borderaxespad=0, fontsize=12, ncol=4)
     plt.grid(False)
     plt.show()
 
@@ -68,7 +68,7 @@ def save_data(velocities, best_c, apreciations):
 
 def main():
 
-    velocities = [1, 3.6, 10]
+    velocities = [1, 3, 6, 10]
 
     data = read_data(velocities)
     best_c = []
