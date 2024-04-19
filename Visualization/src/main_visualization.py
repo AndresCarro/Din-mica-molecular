@@ -57,6 +57,7 @@ def complete_visualization_opencv(particles_coords, timeFrames, particle_radius,
             else:  # visualization_mode == 'infected'
                 if (fila['crash'] == 'NONE' and (fila['ParticleA'] == N or fila['ParticleB'] == N) and
                         fila['id'] != N and fila['id'] in [fila['ParticleA'], fila['ParticleB']]):  # Has gotten infected
+                    # if (fila['crash'] == 'CENTER' and fila['id'] in [fila['ParticleA'], fila['ParticleB']]):  # Has gotten infected
                     infected_map[fila['id']] = 1
                     particle_color = INFECTED_COLOR
                 elif infected_map.get(fila['id']) == 1:  # is already infected

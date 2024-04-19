@@ -45,9 +45,11 @@ def best_c_alg(d, tiempo):
 df1 = pd.read_csv(f'../output/discreto_{N}_0_{V}A.csv')
 df2 = pd.read_csv(f'../output/discreto_{N}_0_{V}B.csv')
 df3 = pd.read_csv(f'../output/discreto_{N}_0_{V}C.csv')
+df4 = pd.read_csv(f'../output/discreto_{N}_0_{V}D.csv')
+#df5 = pd.read_csv(f'../output/discreto_{N}_0_{V}E.csv')
 
 # Combinar los tres DataFrames en uno solo
-df = pd.concat([df1, df2, df3])
+df = pd.concat([df1, df2, df3, df4])
 df['d'] = df['d'] * df['d']
 
 # Agrupa los valores por tiempo y calcula el promedio y la desviación estándar
@@ -65,10 +67,13 @@ linea = best_c * tiempo
 # Grafica el promedio con desviación estándar como error
 plt.figure(figsize=(10, 6))
 plt.plot(tiempo, linea, color='red', linestyle='--')
-plt.plot(df1['tiempo'], df1['d']**2, linestyle='--', color='black')
-plt.plot(df2['tiempo'], df2['d']**2, linestyle='--', color='black')
-plt.plot(df3['tiempo'], df3['d']**2, linestyle='--', color='black')
-plt.errorbar(tiempo, promedio, yerr=desviacion_estandar, fmt='o')
+plt.plot(df1['tiempo'], df1['d']**2, linestyle='--', color='grey')
+plt.plot(df2['tiempo'], df2['d']**2, linestyle='--', color='grey')
+plt.plot(df3['tiempo'], df3['d']**2, linestyle='--', color='grey')
+plt.plot(df4['tiempo'], df4['d']**2, linestyle='--', color='grey')
+#plt.plot(df5['tiempo'], df5['d']**2, linestyle='--', color='grey')
+
+plt.errorbar(tiempo, promedio, yerr=0, fmt='o')
 plt.xlabel('Tiempo[s]', fontsize=16)
 plt.ylabel('Distancia media[m]', fontsize=16)
 plt.grid(False)
@@ -77,3 +82,7 @@ plt.show()
 output = f'../output/Difusion_{V}.csv'
 result_df = pd.DataFrame({'velocity': [V], 'best_c': [best_c], 'apreciation': [apreciacion]})
 result_df.to_csv(output, index=False)
+
+output_data = f'../output/DifusionData_{V}.csv'
+result_df = pd.DataFrame({'tiempo': tiempo, 'values': promedio})
+result_df.to_csv(output_data, index=False)
