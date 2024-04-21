@@ -22,18 +22,25 @@ Una vez establecidos estos valores correr la función main del codigo java, el c
 Si se desea visualizar la animación dirigirse a la carpeta visualization y correr el comando
 
 ````bash
-python3 Main_simulation.py
+python3 main_simulation.py
 ````
 
 ### Analisis de Presion
 
-Para realizar este analisis se provee la función **_NoiseMultiSimulation()_** dentro del condigo java. Esta función correrá todas las simulaciones necesarias para el posterior analisis.
+Para realizar este analisis se provee la función **_NoiseMultiSimulation()_** dentro del codigo java. Esta función correrá todas las simulaciones necesarias para el posterior analisis.
 
-Una vez realizadas las simulaciones necesarias dirigirse a la carpeta visualization y correr el comando sigiente para ver la evolución temporal de la presión
+Una vez realizadas las simulaciones necesarias dirigirse a la carpeta visualization y correr el comando sigiente para ver la evolución temporal de la presión.
 
 ````bash
 python3 pressure_vs_time.py
 ````
+
+Si se desea coloreadas las particulas que colisionan con el obstaculo se puede agregar el agrgumento infected a la ejecucion del archivo.
+
+````bash
+python3 pressure_vs_time.py infected
+````
+
 
 y posteriormente para revisar la correspondencia con la temperatura (Velocidad al cuadrado)
 
