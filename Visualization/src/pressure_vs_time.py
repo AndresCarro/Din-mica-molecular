@@ -5,7 +5,8 @@ import json
 import sys
 import cv2
 import matplotlib.pyplot as plt
-from pressure_vs_temperature import CrashSpeed
+import math
+from pressure_vs_temperature import CrashSpeed, ObstacleCrashSpeed
 
 
 # ---------------------------------------------------
@@ -22,8 +23,9 @@ SPEED = 1
 # ---------------------------------------------------
 # CONSTANTES
 # ---------------------------------------------------
-DELTA_T = 1.820695 / 200
-L = 0.01
+CIRCLE_RADIUS = 0.005
+DELTA_T = 1.82449626 / 40
+L = 0.1
 MASS = 1
 NON_WALL_OBJECTS = ['INIT', 'CENTER', 'NONE']
 # ---------------------------------------------------
@@ -45,9 +47,9 @@ def calculate_pressure_values(particles_coords):
 
         if current_time - delta_t_limit > DELTA_T:
             wall_pressure_values.append(sum(current_wall_velocities))
-            count_wall_crashes = len(current_wall_velocities)
-            print('Amount of wall crashes in this delta:', count_wall_crashes)
             current_wall_velocities = []
+            obstacle_pressure_values.append(sum(current_obstacle_velocities))
+            current_obstacle_velocities = []
             delta_t_limit += DELTA_T
 
         # Save delta_v values for particles that have crashed into a wall
@@ -56,30 +58,33 @@ def calculate_pressure_values(particles_coords):
                 current_wall_velocities.append(CrashSpeed(fila['vel'], fila['angulo'],
                                                      fila['crash']).calculate_delta_normal_speed() / (DELTA_T * 4 * L))
                 break
-            elif fila['crash'] == 'CENTER':
-                pass
+            elif fila['crash'] == 'CENTER' and fila['id'] == fila['ParticleA']:
+                current_obstacle_velocities.append(ObstacleCrashSpeed(fila['vel'], fila['angulo'], fila['x'],
+                                                                      fila['y']).calculate_delta_normal_speed() / (DELTA_T * 2 * math.pi * CIRCLE_RADIUS))
+                break
 
-    return wall_pressure_values
+    return wall_pressure_values, obstacle_pressure_values
 
 
 def main():
     particles_coords = pd.read_csv(OUTPUT_PATH + 'SimulationData_' + str(N) + '_' + str(FAKE_L)
                                    + "_" + str(SPEED) + '.csv')
-    pressure_values = calculate_pressure_values(particles_coords)
-    print('Pressure values: ', pressure_values)
+    wall_pressure_values, obstacle_pressure_values = calculate_pressure_values(particles_coords)
     time_values = []
 
-    for index in range(len(pressure_values)):
+    for index in range(len(wall_pressure_values)):
         time_values.append(index * DELTA_T)
 
-    fig, ax = plt.subplots()
-    ax.plot(time_values, pressure_values)
+    plt.figure(figsize=(10, 6))
+    plt.plot(time_values, wall_pressure_values)
+    plt.axvline(x=0.05, color='red', linestyle='--', linewidth=2)
 
-    ax.set_xlabel('Tiempo [s]')
-    ax.set_ylabel('Presión')
-    ax.set_title('')
+    plt.plot(time_values, obstacle_pressure_values)
+    plt.axvline(x=0.05, color='red', linestyle='--', linewidth=2)
+    plt.xlabel('Tiempo [s]', fontsize=16)
+    plt.ylabel('Presión', fontsize=16)
+    plt.grid(False)
 
-    # Step 6: Show or save the graph
     plt.show()
 
 
