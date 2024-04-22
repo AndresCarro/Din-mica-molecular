@@ -16,12 +16,12 @@ public class SimulationFactory {
         CrashList = new CrashList();
 
         // revisar la asignacion en algun momento
-        this.maxCrash =maxCrash;
-        this.frameCrash =frameCrash;
+        this.maxCrash = maxCrash;
+        this.frameCrash = frameCrash;
         this.movable = movable;
         this.outputFile = "Simulation/output/SimulationData_" + N + "_" + (int) L + "_" + (int) speed + ".csv";
         String outputStatus = "Simulation/output/StateData_" + N + "_" + (int) L + "_" + (int) speed + ".json";
-        writeStatus(outputStatus, L,  N, speed, movable, maxCrash, this.frameCrash);
+        writeStatus(outputStatus, L, N, speed, movable, maxCrash, this.frameCrash);
 
         createParticles(N, L, speed);
         setTimes();

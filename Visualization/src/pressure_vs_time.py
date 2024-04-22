@@ -60,7 +60,7 @@ def calculate_pressure_values(particles_coords):
                 break
             elif fila['crash'] == 'CENTER' and fila['id'] == fila['ParticleA']:
                 current_obstacle_velocities.append(ObstacleCrashSpeed(fila['vel'], fila['angulo'], fila['x'],
-                                                                      fila['y']).calculate_delta_normal_speed() / (DELTA_T * 2 * math.pi * CIRCLE_RADIUS))
+                                    fila['y']).calculate_delta_normal_speed() / (DELTA_T * 2 * math.pi * CIRCLE_RADIUS))
                 break
 
     return wall_pressure_values, obstacle_pressure_values
@@ -75,16 +75,22 @@ def main():
     for index in range(len(wall_pressure_values)):
         time_values.append(index * DELTA_T)
 
+    print('Presion promedio con respecto a las paredes: ', sum(wall_pressure_values) / len(wall_pressure_values))
+    print('Error de la presion con respecto a las paredes: ', np.std(wall_pressure_values))
+    print('Presion promedio con respecto al obstaculo: ', sum(obstacle_pressure_values) / len(obstacle_pressure_values))
+    print('Error de la presion con respecto al obstaculo: ', np.std(obstacle_pressure_values))
+
     plt.figure(figsize=(10, 6))
-    plt.plot(time_values, wall_pressure_values)
+    plt.plot(time_values, wall_pressure_values, label=f'Borde')
     plt.axvline(x=0.05, color='red', linestyle='--', linewidth=2)
 
-    plt.plot(time_values, obstacle_pressure_values)
+
+    plt.plot(time_values, obstacle_pressure_values, label=f'Centro')
     plt.axvline(x=0.05, color='red', linestyle='--', linewidth=2)
-    plt.xlabel('Tiempo [s]', fontsize=16)
-    plt.ylabel('Presión', fontsize=16)
+    plt.xlabel('Tiempo (s)', fontsize=16)
+    plt.ylabel('Presión (Pa)', fontsize=16)
     plt.grid(False)
-
+    plt.legend(bbox_to_anchor=(0.5, 1.1), loc='upper center', borderaxespad=0, fontsize=12, ncol=4)
     plt.show()
 
 

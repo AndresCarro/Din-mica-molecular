@@ -15,14 +15,17 @@ L = 0.1
 FAKE_L = 0
 RADIUS_PARTICLES = 0.001
 N = 250
-SPEED = 1
+SPEED = 10
 RADIUS_CIRCLE = 0.005
+FPS = 120.0
 # ---------------------------------------------------
 
 PARTICLES_COORDINATES_FILE2 = ('../../Simulation/output/SimulationData_' + str(N) + '_' + str(FAKE_L) +
                                '_' + str(SPEED) + '.csv')
+SIMULATION_INPUT_JSON = ('../../Simulation/output/' + 'StateData_' + str(N) + '_' + str(FAKE_L) +
+                         '_' + str(SPEED) + '.json')
 CONFIG_FILE = '../../Simulation/input/input.json'
-OPENCV_OUTPUT_FILENAME = '../output/open_cv_output'
+OPENCV_OUTPUT_FILENAME = '../output/visualization_' + str(N) + '_' + str(FAKE_L) + str(SPEED)
 MP4_FORMAT = 'mp4'
 SCALE_FACTOR = 10000
 WALL_COLOR = (255, 255, 255)
@@ -33,10 +36,10 @@ INFECTED_COLOR = (0, 0, 255)
 
 
 def complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, circle_radius, is_movable,
-                                  visualization_mode = ''):
+                                  visualization_mode):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     SCALED_L = int(L * SCALE_FACTOR)
-    video_writer = cv2.VideoWriter(OPENCV_OUTPUT_FILENAME + '.' + MP4_FORMAT, fourcc, 60.0, (SCALED_L,
+    video_writer = cv2.VideoWriter(OPENCV_OUTPUT_FILENAME + '.' + MP4_FORMAT, fourcc, FPS, (SCALED_L,
                                                                                              SCALED_L))
     infected_map = {}
     for timeFrame in timeFrames:
@@ -55,7 +58,7 @@ def complete_visualization_opencv(particles_coords, timeFrames, particle_radius,
             elif visualization_mode != 'infected':
                 cv2.circle(frame, tuple(current_pos), int(particle_radius * SCALE_FACTOR), PARTICLE_COLOR, -1)
             else:  # visualization_mode == 'infected'
-                if (fila['crash'] == 'NONE' and (fila['ParticleA'] == N or fila['ParticleB'] == N) and
+                if (fila['crash'] == 'CENTER' and (fila['ParticleA'] == N or fila['ParticleB'] == N) and
                         fila['id'] != N and fila['id'] in [fila['ParticleA'], fila['ParticleB']]):  # Has gotten infected
                     # if (fila['crash'] == 'CENTER' and fila['id'] in [fila['ParticleA'], fila['ParticleB']]):  # Has gotten infected
                     infected_map[fila['id']] = 1
@@ -79,11 +82,12 @@ def read_config_file(file_path):
 
 
 def main():
-    config = read_config_file(OUTPUT_PATH + 'StateData_' + str(N) + '_' + str(FAKE_L) + '_' + str(SPEED) + '.json')
+    config = read_config_file(SIMULATION_INPUT_JSON)
     particles_coords = pd.read_csv(PARTICLES_COORDINATES_FILE2)
 
     if len(sys.argv) == 2:
         visualization_mode = sys.argv[1]
+        print()
         if visualization_mode == 'help':
             print('For infection mode add the following argument: infected\n' +
                   'Else, just don\'t pass arguments.')

@@ -37,9 +37,9 @@ class CrashSpeed:
 
     def calculate_delta_normal_speed(self):
         if self.wall == 'UP' or self.wall == 'DOWN':
-            return abs(- (self.v_o * np.sin(self.angle)) - (self.v_o * np.sin(self.angle)))
+            return abs(self.v_o * np.sin(self.angle) * 2)
         elif self.wall == 'LEFT' or self.wall == 'RIGHT':
-            return abs(- (self.v_o * np.cos(self.angle)) - (self.v_o * np.cos(self.angle)))
+            return abs(self.v_o * np.cos(self.angle) * 2)
 
 class ObstacleCrashSpeed:
     def __init__(self, velocity, angle, x, y):
@@ -49,7 +49,7 @@ class ObstacleCrashSpeed:
         self.y = y
 
     def calculate_delta_normal_speed(self):
-        alpha = math.atan2(self.y - 0.05, self.x - 0.05)
+        alpha = math.atan2(L / 2 - self.y, L / 2 - self.x)
         return abs((self.v * math.cos(alpha)) * 2)
 
 
@@ -119,12 +119,12 @@ def main():
 
     plt.figure(figsize=(10, 6))
 
-    plt.errorbar(temperature_values, graph_wall_pressure_values, yerr=graph_std_wall_graph_values, fmt='o')
-    plt.errorbar(temperature_values, graph_obstacle_pressure_values, yerr=graph_std_obstacle_pressure_values, fmt='o')
+    plt.errorbar(temperature_values, graph_wall_pressure_values, yerr=graph_std_wall_graph_values, fmt='o', label='Borde')
+    plt.errorbar(temperature_values, graph_obstacle_pressure_values, yerr=graph_std_obstacle_pressure_values, fmt='o', label='Centro')
     plt.xlabel('Temperatura (U.A)', fontsize=16)
     plt.ylabel('Presión (Pa)', fontsize=16)
     plt.grid(False)
-
+    plt.legend(bbox_to_anchor=(0.5, 1.1), loc='upper center', borderaxespad=0, fontsize=12, ncol=4)
     plt.show()
 
 
