@@ -33,7 +33,7 @@ INFECTED_COLOR = (0, 0, 255)
 
 
 def complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, circle_radius, is_movable,
-                                  visualization_mode):
+                                  visualization_mode = ''):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     SCALED_L = int(L * SCALE_FACTOR)
     video_writer = cv2.VideoWriter(OPENCV_OUTPUT_FILENAME + '.' + MP4_FORMAT, fourcc, 60.0, (SCALED_L,
@@ -78,10 +78,18 @@ def read_config_file(file_path):
     return config_data
 
 
-if __name__ == '__main__':
+def main():
     config = read_config_file(OUTPUT_PATH + 'StateData_' + str(N) + '_' + str(FAKE_L) + '_' + str(SPEED) + '.json')
     particles_coords = pd.read_csv(PARTICLES_COORDINATES_FILE2)
-    visualization_mode = sys.argv[1]
+
+    if len(sys.argv) == 2:
+        visualization_mode = sys.argv[1]
+        if visualization_mode == 'help':
+            print('For infection mode add the following argument: infected\n' +
+                  'Else, just don\'t pass arguments.')
+            return
+    else:
+        visualization_mode = ''
 
     timeFrames = particles_coords['time'].unique()
     particle_radius = RADIUS_PARTICLES
@@ -91,3 +99,7 @@ if __name__ == '__main__':
     complete_visualization_opencv(particles_coords, timeFrames, particle_radius, L, RADIUS_CIRCLE, config['movable'],
                                   visualization_mode)
     print('DONE!')
+
+
+if __name__ == '__main__':
+    main()
