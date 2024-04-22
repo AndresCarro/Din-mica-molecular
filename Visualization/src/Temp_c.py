@@ -10,7 +10,7 @@ data['velocity_squared'] = data['velocity'] ** 2
 # Graficar
 plt.figure(figsize=(10, 6))
 plt.errorbar(data['velocity_squared'], data['best_c'], yerr=data['apreciation'], fmt='o')
-plt.xlabel('Temperatura(V²)', fontsize=16)
+plt.xlabel('Temperatura(A.U)', fontsize=16)
 plt.ylabel('Pendiente', fontsize=16)
 plt.grid(False)
 plt.show()

@@ -15,7 +15,7 @@ L = 0.1
 FAKE_L = 0
 RADIUS_PARTICLES = 0.001
 N = 250
-SPEED = 2
+SPEED = 1
 RADIUS_CIRCLE = 0.005
 # ---------------------------------------------------
 
