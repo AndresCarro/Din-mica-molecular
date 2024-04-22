@@ -54,7 +54,7 @@ def plot_c_data(data, best_c):
 
         plt.plot(tiempo_recta, choques_recta, color='black', linestyle='--')
 
-    plt.xlabel('Tiempo [s]', fontsize=16)
+    plt.xlabel('Tiempo (s)', fontsize=16)
     plt.ylabel('Choques nuevos', fontsize=16)
     plt.legend(bbox_to_anchor=(0.5, 1.1), loc='upper center', borderaxespad=0, fontsize=12, ncol=4)
     plt.grid(False)

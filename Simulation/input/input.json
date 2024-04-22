@@ -2,7 +2,7 @@
   "L": 0.1,
   "N": 250,
   "speed": 1,
-  "totalCrash": 40,
+  "totalCrash": 40000,
   "frameCrash": 10,
   "movable": true
 }

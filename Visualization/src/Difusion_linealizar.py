@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 # ---------------------------------------------------
 # DATOS A CAMBIAR SEGÚN EL CASO DE ESTUDIO
 # ---------------------------------------------------
-N = 200
+N = 250
 V = 1
 # ---------------------------------------------------
 
@@ -46,10 +46,15 @@ df1 = pd.read_csv(f'../output/discreto_{N}_0_{V}A.csv')
 df2 = pd.read_csv(f'../output/discreto_{N}_0_{V}B.csv')
 df3 = pd.read_csv(f'../output/discreto_{N}_0_{V}C.csv')
 df4 = pd.read_csv(f'../output/discreto_{N}_0_{V}D.csv')
-#df5 = pd.read_csv(f'../output/discreto_{N}_0_{V}E.csv')
+df5 = pd.read_csv(f'../output/discreto_{N}_0_{V}E.csv')
+df6 = pd.read_csv(f'../output/discreto_{N}_0_{V}F.csv')
+df7 = pd.read_csv(f'../output/discreto_{N}_0_{V}G.csv')
+df8 = pd.read_csv(f'../output/discreto_{N}_0_{V}H.csv')
+df9 = pd.read_csv(f'../output/discreto_{N}_0_{V}I.csv')
+df10 = pd.read_csv(f'../output/discreto_{N}_0_{V}J.csv')
 
 # Combinar los tres DataFrames en uno solo
-df = pd.concat([df1, df2, df3, df4])
+df = pd.concat([df1, df2, df3, df4, df5, df6, df7, df8, df9, df10])
 df['d'] = df['d'] * df['d']
 
 # Agrupa los valores por tiempo y calcula el promedio y la desviación estándar
@@ -67,15 +72,20 @@ linea = best_c * tiempo
 # Grafica el promedio con desviación estándar como error
 plt.figure(figsize=(10, 6))
 plt.plot(tiempo, linea, color='red', linestyle='--')
-plt.plot(df1['tiempo'], df1['d']**2, linestyle='--', color='grey')
-plt.plot(df2['tiempo'], df2['d']**2, linestyle='--', color='grey')
-plt.plot(df3['tiempo'], df3['d']**2, linestyle='--', color='grey')
-plt.plot(df4['tiempo'], df4['d']**2, linestyle='--', color='grey')
-#plt.plot(df5['tiempo'], df5['d']**2, linestyle='--', color='grey')
+plt.plot(df1['tiempo'], df1['d']**2, linestyle='--', color='lightgrey')
+plt.plot(df2['tiempo'], df2['d']**2, linestyle='--', color='black')
+plt.plot(df3['tiempo'], df3['d']**2, linestyle='--', color='lightgrey')
+plt.plot(df4['tiempo'], df4['d']**2, linestyle='--', color='lightgrey')
+plt.plot(df5['tiempo'], df5['d']**2, linestyle='--', color='lightgrey')
+plt.plot(df6['tiempo'], df6['d']**2, linestyle='--', color='lightgrey')
+plt.plot(df7['tiempo'], df7['d']**2, linestyle='--', color='lightgrey')
+plt.plot(df8['tiempo'], df8['d']**2, linestyle='--', color='lightgrey')
+plt.plot(df9['tiempo'], df9['d']**2, linestyle='--', color='lightgrey')
+plt.plot(df10['tiempo'], df10['d']**2, linestyle='--', color='lightgrey')
 
 plt.errorbar(tiempo, promedio, yerr=0, fmt='o')
-plt.xlabel('Tiempo[s]', fontsize=16)
-plt.ylabel('Distancia media[m]', fontsize=16)
+plt.xlabel('Tiempo (s)', fontsize=16)
+plt.ylabel('Distancia cuadratica media (m)', fontsize=16)
 plt.grid(False)
 plt.show()
 

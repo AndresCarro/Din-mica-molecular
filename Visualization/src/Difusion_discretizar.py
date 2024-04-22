@@ -7,13 +7,13 @@ import matplotlib.pyplot as plt
 # ---------------------------------------------------
 OUTPUT_PATH = '../../Simulation/output/SimulationData_'
 OUTPUT_CSV = '../output/discreto_'
-N = 200
+N = 250
 L = 0
 V = 1
 # ---------------------------------------------------
 
 # Leer el archivo CSV
-df = pd.read_csv(OUTPUT_PATH + str(N) + '_' + str(L) + '_' + str(V) + '.csv')
+df = pd.read_csv(OUTPUT_PATH + str(N) + '_' + str(L) + '_' + str(V) + '_v2.csv')
 output = OUTPUT_CSV + str(N) + '_' + str(L) + '_' + str(V) + '.csv'
 
 # Inicializar un contador acumulativo
@@ -50,9 +50,11 @@ for index, row in df.iterrows():
 # Graficar los resultados
 plt.figure(figsize=(10, 6))
 plt.plot(tiempo, d_values)
+#plt.axvline(x=0.10, color='red', linestyle='--', linewidth=2)
+
 plt.plot(tiempo_discreto, d_values_discreto, 'ro')
-plt.xlabel('Tiempo[s]', fontsize=16)
-plt.ylabel('Distancia[m]', fontsize=16)
+plt.xlabel('Tiempo(s)', fontsize=16)
+plt.ylabel('Distancia(m)', fontsize=16)
 plt.grid(False)
 plt.show()
 
